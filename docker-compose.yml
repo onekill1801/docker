@@ -49,9 +49,9 @@ services:
     image: opencti/platform:latest
     environment:
       - APP__PORT=8080
-      - APP__ADMIN__EMAIL=${OPENCTI_ADMIN_EMAIL}
-      - APP__ADMIN__PASSWORD=${OPENCTI_ADMIN_PASSWORD}
-      - APP__ADMIN__TOKEN=${OPENCTI_ADMIN_TOKEN}
+      - APP__ADMIN__EMAIL=tuannan@vnpt.vn
+      - APP__ADMIN__PASSWORD=BkisBSE123
+      - APP__ADMIN__TOKEN=1ce1ab1c-b2de-47d8-8e9b-a141ff312387
       - APP__LOGS_LEVEL=error
       - APP__LOGS=./logs
       - APP__REACTIVE=true
@@ -87,7 +87,7 @@ services:
     image: opencti/worker:latest
     environment:
       - OPENCTI_URL=http://opencti:8080
-      - OPENCTI_TOKEN=${OPENCTI_ADMIN_TOKEN}
+      - OPENCTI_TOKEN=1ce1ab1c-b2de-47d8-8e9b-a141ff312387
       - WORKER_LOG_LEVEL=info
     depends_on:
       - opencti
@@ -99,7 +99,7 @@ services:
     image: opencti/connector-export-file-stix:latest
     environment:
       - OPENCTI_URL=http://opencti:8080
-      - OPENCTI_TOKEN=${OPENCTI_ADMIN_TOKEN}
+      - OPENCTI_TOKEN=1ce1ab1c-b2de-47d8-8e9b-a141ff312387
       - CONNECTOR_ID=${CONNECTOR_EXPORT_FILE_STIX_ID} # Valid UUDv4
       - CONNECTOR_TYPE=INTERNAL_EXPORT_FILE
       - CONNECTOR_NAME=ExportFileStix2
@@ -111,7 +111,7 @@ services:
     image: opencti/connector-export-file-csv:latest
     environment:
       - OPENCTI_URL=http://opencti:8080
-      - OPENCTI_TOKEN=${OPENCTI_ADMIN_TOKEN}
+      - OPENCTI_TOKEN=1ce1ab1c-b2de-47d8-8e9b-a141ff312387
       - CONNECTOR_ID=${CONNECTOR_EXPORT_FILE_CSV_ID} # Valid UUDv4
       - CONNECTOR_TYPE=INTERNAL_EXPORT_FILE
       - CONNECTOR_NAME=ExportFileCsv
@@ -123,7 +123,7 @@ services:
     image: opencti/connector-import-file-stix:latest
     environment:
       - OPENCTI_URL=http://opencti:8080
-      - OPENCTI_TOKEN=${OPENCTI_ADMIN_TOKEN}
+      - OPENCTI_TOKEN=1ce1ab1c-b2de-47d8-8e9b-a141ff312387
       - CONNECTOR_ID=${CONNECTOR_IMPORT_FILE_STIX_ID} # Valid UUDv4
       - CONNECTOR_TYPE=INTERNAL_IMPORT_FILE
       - CONNECTOR_NAME=ImportFileStix2
@@ -135,7 +135,7 @@ services:
     image: opencti/connector-import-file-pdf-observables:latest
     environment:
       - OPENCTI_URL=http://opencti:8080
-      - OPENCTI_TOKEN=${OPENCTI_ADMIN_TOKEN}
+      - OPENCTI_TOKEN=1ce1ab1c-b2de-47d8-8e9b-a141ff312387
       - CONNECTOR_ID=${CONNECTOR_IMPORT_FILE_PDF_OBSERVABLES_ID} # Valid UUDv4
       - CONNECTOR_TYPE=INTERNAL_IMPORT_FILE
       - CONNECTOR_NAME=ImportFilePdfObservables
@@ -148,7 +148,7 @@ services:
     image: opencti/connector-opencti:latest
     environment:
       - OPENCTI_URL=http://opencti:8080
-      - OPENCTI_TOKEN=${OPENCTI_ADMIN_TOKEN}
+      - OPENCTI_TOKEN=1ce1ab1c-b2de-47d8-8e9b-a141ff312387
       - CONNECTOR_ID=${CONNECTOR_OPENCTI_ID} # Valid UUDv4
       - CONNECTOR_TYPE=EXTERNAL_IMPORT
       - CONNECTOR_NAME=OpenCTI
@@ -164,7 +164,7 @@ services:
     image: opencti/connector-mitre:latest
     environment:
       - OPENCTI_URL=http://opencti:8080
-      - OPENCTI_TOKEN=${OPENCTI_ADMIN_TOKEN}
+      - OPENCTI_TOKEN=1ce1ab1c-b2de-47d8-8e9b-a141ff312387
       - CONNECTOR_ID=${CONNECTOR_MITRE_ID} # Valid UUDv4
       - CONNECTOR_TYPE=EXTERNAL_IMPORT
       - CONNECTOR_NAME=MITRE ATT&CK
@@ -175,6 +175,21 @@ services:
       - MITRE_ENTERPRISE_FILE_URL=https://raw.githubusercontent.com/mitre/cti/master/enterprise-attack/enterprise-attack.json
       - MITRE_PRE_ATTACK_FILE_URL=https://raw.githubusercontent.com/mitre/cti/master/pre-attack/pre-attack.json
       - MITRE_INTERVAL=7 # Days
+    restart: always
+  connector-cve:
+    image: opencti/connector-cve:latest
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=1ce1ab1c-b2de-47d8-8e9b-a141ff312387
+      - CONNECTOR_ID=ee2b57b0-dc55-49b0-aa32-013e18589af2
+      - CONNECTOR_TYPE=EXTERNAL_IMPORT
+      - CONNECTOR_NAME=Common Vulnerabilities and Exposures
+      - CONNECTOR_SCOPE=identity,vulnerability
+      - CONNECTOR_CONFIDENCE_LEVEL=3
+      - CONNECTOR_UPDATE_EXISTING_DATA=true
+      - CONNECTOR_LOG_LEVEL=info
+      - CVE_NVD_DATA_FEED=https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-recent.json.gz
+      - CVE_INTERVAL=7
     restart: always
 volumes:
   grakndata:
